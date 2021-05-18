@@ -38,7 +38,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void logInUser(User user) {
         Log.d(TAG, "Login successful");
-        SharedPreferences sharedPreferences =getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(USERNAME, user.username);
         editor.putString(PASSWORD, user.password);
@@ -53,10 +53,11 @@ public class LoginActivity extends AppCompatActivity {
 
         if (username.isEmpty() || password.isEmpty()) {
             showErrorsView(LoginErrorEnum.EMPTY_FIELDS);
+            return;
         }
 
-            AppDatabase database = AppDatabase.getInstance(getApplicationContext());
-            UserDao userDao = database.userDao();
+        AppDatabase database = AppDatabase.getInstance(getApplicationContext());
+        UserDao userDao = database.userDao();
         new Thread(() -> {
             // todo add encryption
             User user = userDao.findUser(username, password);
