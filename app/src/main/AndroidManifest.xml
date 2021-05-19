@@ -9,7 +9,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BamProject">
-        <activity android:name=".HomeActivity"></activity>
+        <activity android:name=".EditCardActivity"></activity>
+
+        <provider
+            android:name=".CardProvider"
+            android:authorities="com.example.bamproject"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity android:name=".CardDetailsActivity" />
+        <activity android:name=".AddCardActivity" />
+        <activity android:name=".HomeActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".MainActivity">

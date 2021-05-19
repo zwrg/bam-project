@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CardDetailsActivity">
+
+    <TextView
+        android:id="@+id/card_details_label_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/card_number"
+        app:layout_constraintEnd_toStartOf="@+id/card_details_text_number"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/card_details_label_name" />
+
+    <TextView
+        android:id="@+id/card_details_label_validity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/card_validity"
+        app:layout_constraintEnd_toStartOf="@+id/card_details_text_validity"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/card_details_label_number" />
+
+    <TextView
+        android:id="@+id/card_details_label_cvv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/card_cvv"
+        app:layout_constraintEnd_toStartOf="@+id/card_details_text_cvv"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/card_details_label_validity" />
+
+    <TextView
+        android:id="@+id/card_details_text_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/card_number"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/card_details_label_number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/card_details_label_number"
+        app:layout_constraintTop_toTopOf="@+id/card_details_label_number" />
+
+    <TextView
+        android:id="@+id/card_details_text_validity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/card_validity"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/card_details_label_validity"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/card_details_label_validity"
+        app:layout_constraintTop_toTopOf="@+id/card_details_label_validity" />
+
+    <TextView
+        android:id="@+id/card_details_text_cvv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/card_cvv"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/card_details_label_cvv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/card_details_label_cvv"
+        app:layout_constraintTop_toTopOf="@+id/card_details_label_cvv" />
+
+    <TextView
+        android:id="@+id/card_details_label_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/card_name"
+        app:layout_constraintEnd_toStartOf="@+id/card_details_text_name"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/card_details_text_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/card_name"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/card_details_label_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/card_details_label_name"
+        app:layout_constraintTop_toTopOf="@+id/card_details_label_name" />
+
+    <Button
+        android:id="@+id/card_details_button_show"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:onClick="onShowHandler"
+        android:text="@string/show"
+        app:layout_constraintEnd_toStartOf="@+id/card_details_button_edit"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/card_details_label_cvv" />
+
+    <Button
+        android:id="@+id/card_details_button_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onEditHandler"
+        android:text="@string/edit"
+        app:layout_constraintBottom_toBottomOf="@+id/card_details_button_show"
+        app:layout_constraintEnd_toStartOf="@+id/card_details_button_remove"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/card_details_button_show"
+        app:layout_constraintTop_toTopOf="@+id/card_details_button_show" />
+
+    <Button
+        android:id="@+id/card_details_button_remove"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onRemoveHandler"
+        android:text="@string/remove"
+        app:layout_constraintBottom_toBottomOf="@+id/card_details_button_edit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/card_details_button_edit"
+        app:layout_constraintTop_toTopOf="@+id/card_details_button_edit" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,4 +6,16 @@
     <string name="password">Password</string>
     <string name="repeat_password">Repeat password</string>
     <string name="logout">Logout</string>
+    <string name="new_card">Add new card</string>
+    <string name="card_name">Card Name</string>
+    <string name="card_number">Card Number</string>
+    <string name="card_cvv">CVV/CVC</string>
+    <string name="card_validity">Validity MM/YY</string>
+    <string name="save">Save</string>
+    <string name="refresh">Refresh data</string>
+    <string name="show">Show</string>
+    <string name="hide">Hide</string>
+    <string name="edit">Edit</string>
+    <string name="remove">Remove</string>
+    <string name="cancel">Cancel</string>
 </resources>

@@ -14,6 +14,7 @@ import android.widget.TextView;
 import static com.example.bamproject.Constants.PASSWORD;
 import static com.example.bamproject.Constants.SHARED_PREFS;
 import static com.example.bamproject.Constants.USERNAME;
+import static com.example.bamproject.Constants.USER_ID;
 
 public class RegisterActivity extends AppCompatActivity {
     final String TAG = "Register Activity";
@@ -90,10 +91,11 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void logInUser(User user) {
         Log.d(TAG, "Login successful");
-        SharedPreferences sharedPreferences =getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(USERNAME, user.username);
         editor.putString(PASSWORD, user.password);
+        editor.putInt(USER_ID, user.uid);
         editor.apply();
 
         Intent intent = new Intent(RegisterActivity.this, HomeActivity.class);

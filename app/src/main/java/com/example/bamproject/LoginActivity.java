@@ -14,6 +14,7 @@ import android.widget.TextView;
 import static com.example.bamproject.Constants.PASSWORD;
 import static com.example.bamproject.Constants.SHARED_PREFS;
 import static com.example.bamproject.Constants.USERNAME;
+import static com.example.bamproject.Constants.USER_ID;
 
 public class LoginActivity extends AppCompatActivity {
     final String TAG = "Login Activity";
@@ -42,6 +43,7 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(USERNAME, user.username);
         editor.putString(PASSWORD, user.password);
+        editor.putInt(USER_ID, user.uid);
         editor.apply();
 
         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
