@@ -18,4 +18,6 @@
     <string name="edit">Edit</string>
     <string name="remove">Remove</string>
     <string name="cancel">Cancel</string>
+    <string name="export_database">Export Database</string>
+    <string name="import_database">Import Database</string>
 </resources>

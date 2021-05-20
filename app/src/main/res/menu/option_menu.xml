@@ -6,6 +6,12 @@
         android:id="@+id/menu_refresh"
         android:title="@string/refresh" />
     <item
+        android:id="@+id/menu_import"
+        android:title="@string/import_database" />
+    <item
+        android:id="@+id/menu_export"
+        android:title="@string/export_database" />
+    <item
         android:id="@+id/menu_logout"
         android:title="@string/logout" />
 </menu>
