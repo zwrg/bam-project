@@ -90,15 +90,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void logInUser(User user) {
-        Log.d(TAG, "Login successful");
-        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(USERNAME, user.username);
-        editor.putString(PASSWORD, user.password);
-        editor.putInt(USER_ID, user.uid);
-        editor.apply();
-
-        Intent intent = new Intent(RegisterActivity.this, HomeActivity.class);
+        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
         startActivity(intent);
     }
 }
