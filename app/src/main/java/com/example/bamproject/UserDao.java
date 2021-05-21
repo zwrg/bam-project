@@ -13,6 +13,9 @@ public interface UserDao {
     @Query("SELECT username FROM " + User.tableName + " WHERE username = :username")
     String findUser(String username);
 
+    @Query("SELECT uid, username, password FROM " + User.tableName + " WHERE password = :password AND uid = :uid")
+    User checkPassword(int uid, String password);
+
     @Insert
     void insertAll(User... users);
 

@@ -1,11 +1,14 @@
 package com.example.bamproject;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.text.InputType;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,6 +16,7 @@ public class CardDetailsActivity extends AppCompatActivity {
     final String TAG = "Card Details Activity";
     private Card currentCard;
     private boolean isDataHidden = true;
+    private String passwordCheck = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,9 +34,8 @@ public class CardDetailsActivity extends AppCompatActivity {
         AppDatabase database = AppDatabase.getInstance(getApplicationContext());
         CardDao cardDao = database.cardDao();
         new Thread(() -> {
-            Card card = cardDao.getCard(cardId);
-//            Log.d(TAG, card.toString());
-            currentCard = card;
+            currentCard = cardDao.getCard(cardId);
+            //            Log.d(TAG, card.toString());
             runOnUiThread(this::updateView);
         }).start();
     }
@@ -72,8 +75,38 @@ public class CardDetailsActivity extends AppCompatActivity {
     }
 
     public void onShowHandler(View view) {
-        isDataHidden = !isDataHidden;
-        updateView();
+        if (isDataHidden) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Password check");
+
+            final EditText input = new EditText(this);
+            input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            builder.setView(input);
+
+            builder.setPositiveButton("OK", (dialog, which) -> {
+                passwordCheck = input.getText().toString();
+                AppDatabase database = AppDatabase.getInstance(getApplicationContext());
+                UserDao userDao = database.userDao();
+                int userId = Preferences.getUserId(getApplicationContext());
+                if (userId != 0) {
+                    new Thread(() -> {
+                        User user = userDao.checkPassword(userId, passwordCheck);
+                        if (user == null) {
+                            runOnUiThread(() -> Toast.makeText(getApplicationContext(), "Bad password", Toast.LENGTH_LONG).show());
+                        } else {
+                            isDataHidden = !isDataHidden;
+                            runOnUiThread(this::updateView);
+                        }
+                    }).start();
+
+                }
+            });
+            builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+            builder.show();
+        } else {
+            isDataHidden = !isDataHidden;
+            updateView();
+        }
     }
 
     public void onEditHandler(View view) {
