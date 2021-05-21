@@ -1,10 +1,12 @@
 package com.example.bamproject;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -37,14 +39,13 @@ public class LoginActivity extends AppCompatActivity {
         logIn(username, password);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private void logInUser(User user) {
         Log.d(TAG, "Login successful");
-        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(USERNAME, user.username);
-        editor.putString(PASSWORD, user.password);
-        editor.putInt(USER_ID, user.uid);
-        editor.apply();
+
+        Preferences.setUserId(getApplicationContext(), user.uid);
+        Preferences.savePreference(getApplicationContext(), Preferences.USERNAME_PREFERENCE, user.username);
+        Preferences.savePreference(getApplicationContext(), Preferences.USER_PASSWORD_PREFERENCE, user.password);
 
         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
         startActivity(intent);

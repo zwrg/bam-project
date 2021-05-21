@@ -1,10 +1,12 @@
 package com.example.bamproject;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -54,6 +56,7 @@ public class EditCardActivity extends AppCompatActivity {
         cardCvvView.setText(currentCard.cvv);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     public void onSaveHandler(View view) {
         clearErrorsView();
 
@@ -79,8 +82,8 @@ public class EditCardActivity extends AppCompatActivity {
             AppDatabase database = AppDatabase.getInstance(getApplicationContext());
             CardDao cardDao = database.cardDao();
             // todo add other user ID check
-            SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
-            int currentUserId = sharedPreferences.getInt(USER_ID, 0);
+
+            int currentUserId = Preferences.getUserId(getApplicationContext());
 
             if (currentUserId == 0) {
                 throw new Error("User ID = 0");

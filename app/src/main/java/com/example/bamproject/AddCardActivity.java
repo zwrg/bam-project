@@ -46,8 +46,7 @@ public class AddCardActivity extends AppCompatActivity {
             AppDatabase database = AppDatabase.getInstance(getApplicationContext());
             CardDao cardDao = database.cardDao();
             // todo add other user ID check
-            SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
-            int currentUserId = sharedPreferences.getInt(USER_ID, 0);
+            int currentUserId = Preferences.getUserId(getApplicationContext());
 
             if (currentUserId == 0) {
                 throw new Error("User ID = 0");

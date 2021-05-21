@@ -46,12 +46,25 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        checkUser();
+
         refreshCardList();
+    }
+
+    private void checkUser() {
+        final String username = Preferences.getPreference(getApplicationContext(), Preferences.USERNAME_PREFERENCE, "");
+        final String password = Preferences.getPreference(getApplicationContext(), Preferences.USER_PASSWORD_PREFERENCE, "");
+
+        if (username.isEmpty() || password.isEmpty()){
+            throw new Error("unauthorized access");
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+
+        checkUser();
 
         refreshCardList();
     }
@@ -65,8 +78,7 @@ public class HomeActivity extends AppCompatActivity {
         Log.d(TAG, "Refreshing Card List");
         AppDatabase database = AppDatabase.getInstance(getApplicationContext());
         CardDao cardDao = database.cardDao();
-        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
-        int userId = sharedPreferences.getInt(USER_ID, 0);
+        int userId = Preferences.getUserId(getApplicationContext());
         if (userId != 0) {
             new Thread(() -> {
                 List<Card> cards = cardDao.getUserCards(userId);
@@ -146,8 +158,7 @@ public class HomeActivity extends AppCompatActivity {
                 for (int i = 0; i < data.size(); i++) {
                     CardShort cardShort = parseDataFromCsv(data.get(i));
                     if (cardShort != null) {
-                        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
-                        int currentUserId = sharedPreferences.getInt(USER_ID, 0);
+                        int currentUserId = Preferences.getUserId(getApplicationContext());
                         if (currentUserId == 0) {
                             throw new Error("User ID = 0");
                         }
@@ -218,8 +229,7 @@ public class HomeActivity extends AppCompatActivity {
     private void exportDatabaseToFile() {
         File downloadsPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         File databaseFile = new File(downloadsPath, databaseFileName);
-        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
-        int userId = sharedPreferences.getInt(USER_ID, 0);
+        int userId = Preferences.getUserId(getApplicationContext());
         if (userId != 0) {
             new Thread(() -> {
                 AppDatabase database = AppDatabase.getInstance(getApplicationContext());
@@ -309,14 +319,12 @@ public class HomeActivity extends AppCompatActivity {
 //    }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private void logout() {
         Log.d(TAG, "Logout successful");
-        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.remove(USERNAME);
-        editor.remove(PASSWORD);
-        editor.remove(USER_ID);
-        editor.apply();
+        Preferences.removeUserId(getApplicationContext());
+        Preferences.removePreference(getApplicationContext(), Preferences.USERNAME_PREFERENCE);
+        Preferences.removePreference(getApplicationContext(), Preferences.USER_PASSWORD_PREFERENCE);
 
         Intent intent = new Intent(HomeActivity.this, MainActivity.class);
         startActivity(intent);
