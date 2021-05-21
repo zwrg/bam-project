@@ -59,6 +59,9 @@ public class RegisterActivity extends AppCompatActivity {
             case PASSWORDS_MISMATCH:
                 error = "Password did not match";
                 break;
+            case USER_EXISTS:
+                error = "User already exists";
+                break;
             default:
                 error = "";
                 break;
@@ -83,6 +86,11 @@ public class RegisterActivity extends AppCompatActivity {
         // todo add encryption
         new Thread(() -> {
             User user = new User(username, password);
+            String checkIfUserInDatabase = userDao.findUser(username);
+            if (checkIfUserInDatabase == null || checkIfUserInDatabase.equals(username)) {
+                runOnUiThread(() -> showErrorsView(RegisterErrorEnum.USER_EXISTS));
+                return;
+            }
             userDao.insertAll(user);
 
             logInUser(user);

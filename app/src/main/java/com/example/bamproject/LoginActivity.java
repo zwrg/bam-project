@@ -3,20 +3,13 @@ package com.example.bamproject;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import static com.example.bamproject.Constants.PASSWORD;
-import static com.example.bamproject.Constants.SHARED_PREFS;
-import static com.example.bamproject.Constants.USERNAME;
-import static com.example.bamproject.Constants.USER_ID;
 
 public class LoginActivity extends AppCompatActivity {
     final String TAG = "Login Activity";
@@ -63,7 +56,7 @@ public class LoginActivity extends AppCompatActivity {
         UserDao userDao = database.userDao();
         new Thread(() -> {
             // todo add encryption
-            User user = userDao.findUser(username, password);
+            User user = userDao.checkUserInDatabase(username, password);
             if (user == null) {
                 runOnUiThread(() -> showErrorsView(LoginErrorEnum.CREDENTIALS_ERROR));
             } else {
