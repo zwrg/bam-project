@@ -87,13 +87,13 @@ public class RegisterActivity extends AppCompatActivity {
         new Thread(() -> {
             User user = new User(username, password);
             String checkIfUserInDatabase = userDao.findUser(username);
-            if (checkIfUserInDatabase == null || checkIfUserInDatabase.equals(username)) {
+            if (checkIfUserInDatabase != null && checkIfUserInDatabase.equals(username)) {
                 runOnUiThread(() -> showErrorsView(RegisterErrorEnum.USER_EXISTS));
-                return;
+            } else {
+                userDao.insertAll(user);
+                logInUser(user);
             }
-            userDao.insertAll(user);
 
-            logInUser(user);
         }).start();
     }
 

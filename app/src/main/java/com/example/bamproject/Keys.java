@@ -13,14 +13,13 @@ import androidx.security.crypto.MasterKeys;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 
-public class Preferences {
+public class Keys {
     private static volatile SharedPreferences instance;
     private static final int KEY_SIZE = 256;
-    private static final String sharedPreferencesFile = "BAM_PROJECT_SHARED_PREFERENCES";
-    private static final String MASTER_KEY_ALIAS = "MK_ALIAS";
-    private static final String USER_ID_PREFERENCE = "BAM_USER_ID";
-    public static final String USERNAME_PREFERENCE = "BAM_USERNAME";
-    public static final String USER_PASSWORD_PREFERENCE = "BAM_USER_PASSWORD";
+    private static final String sharedPreferencesFile = "BAM_PROJECT_SHARED_PREFERENCES_KEYS";
+    private static final String MASTER_KEY_ALIAS = "KEY_ALIAS";
+    private static final String DATABASE_KEY_ALIAS = "DATABASE_KEY_ALIAS";
+    private static final String DB_KEY = "DB_KEY";
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     public static SharedPreferences getInstance(final Context context) {
@@ -29,7 +28,7 @@ public class Preferences {
             return result;
         }
 
-        synchronized (Preferences.class) {
+        synchronized (Keys.class) {
             if (instance == null) {
                 KeyGenParameterSpec spec = new KeyGenParameterSpec.Builder(
                         MASTER_KEY_ALIAS,
@@ -63,41 +62,30 @@ public class Preferences {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    public static String getPreference(Context context, String key, String defaultValue) {
-        return getInstance(context).getString(key, defaultValue);
+    public static String getKey(Context context) {
+        if (!isKeySet(context)) {
+            KeyGenParameterSpec spec = new KeyGenParameterSpec.Builder(
+                    DATABASE_KEY_ALIAS,
+                    KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
+                    .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
+                    .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
+                    .setKeySize(KEY_SIZE)
+                    .build();
+            String mainKey = null;
+            try {
+                mainKey = MasterKeys.getOrCreate(spec);
+            } catch (GeneralSecurityException | IOException e) {
+                e.printStackTrace();
+            }
+            SharedPreferences.Editor editor = getInstance(context).edit();
+            editor.putString(DB_KEY, mainKey);
+            editor.apply();
+        }
+        return getInstance(context).getString(DB_KEY, "");
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    public static void savePreference(Context context, String key, String value) {
-        SharedPreferences.Editor editor = getInstance(context).edit();
-        editor.putString(key, value);
-        editor.apply();
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    public static int getUserId(Context context) {
-        return getInstance(context).getInt(Preferences.USER_ID_PREFERENCE, 0);
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    public static void setUserId(Context context, int value) {
-        SharedPreferences.Editor editor = getInstance(context).edit();
-        editor.putInt(Preferences.USER_ID_PREFERENCE, value);
-        editor.apply();
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    public static void removeUserId(Context context) {
-        SharedPreferences.Editor editor = getInstance(context).edit();
-        editor.remove(Preferences.USER_ID_PREFERENCE);
-        editor.apply();
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    public static void removePreference(Context context, String key) {
-        SharedPreferences.Editor editor = getInstance(context).edit();
-        editor.remove(key);
-        editor.apply();
+    public static boolean isKeySet(Context context) {
+        return !getInstance(context).getString(DB_KEY, "").equals("");
     }
 }
-
