@@ -18,11 +18,6 @@ public abstract class AppDatabase extends RoomDatabase {
     private static final String DB_NAME = "BamProject_DATABASE.db";
     private static volatile AppDatabase instance;
 
-    private static final int NUMBER_OF_THREADS = 4;
-
-    static final ExecutorService databaseWriteExecutor =
-            Executors.newFixedThreadPool(NUMBER_OF_THREADS);
-
     public static AppDatabase getInstance(final Context context) {
         AppDatabase result = instance;
         if (result != null) {
