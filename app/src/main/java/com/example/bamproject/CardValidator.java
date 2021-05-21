@@ -3,9 +3,9 @@ package com.example.bamproject;
 import android.util.Log;
 
 public class CardValidator {
-    private final String TAG = "Card Validator";
+    private static final String TAG = "Card Validator";
 
-    public boolean isNumberInvalid(String cardNumber) {
+    public static boolean isNumberInvalid(String cardNumber) {
         if (cardNumber.length() != 16) {
             Log.d(TAG, "card number != 16 => " + cardNumber.length());
             return true;
@@ -16,7 +16,7 @@ public class CardValidator {
         return !matches;
     }
 
-    public boolean isValidityInvalid(String cardValidity) {
+    public static boolean isValidityInvalid(String cardValidity) {
         if (cardValidity.length() != 5) {
             Log.d(TAG, "card validity != 5 => " + cardValidity.length());
             return true;
@@ -27,7 +27,7 @@ public class CardValidator {
         return !matches;
     }
 
-    public boolean isCvvInvalid(String cardCvv) {
+    public static boolean isCvvInvalid(String cardCvv) {
         if (cardCvv.length() != 3) {
             Log.d(TAG, "card cvv != 3 => " + cardCvv.length());
             return true;
@@ -41,20 +41,20 @@ public class CardValidator {
         return false;
     }
 
-    public AddCardErrorEnum checkDataValidity(String cardName, String cardNumber, String cardValidity, String cardCvv) {
+    public static CardValidityEnum checkDataValidity(String cardName, String cardNumber, String cardValidity, String cardCvv) {
         if (cardName.isEmpty() || cardNumber.isEmpty() || cardValidity.isEmpty() || cardCvv.isEmpty()) {
-            return AddCardErrorEnum.EMPTY_FIELDS;
+            return CardValidityEnum.EMPTY_FIELDS;
         }
 
         if (isNumberInvalid(cardNumber)) {
-            return AddCardErrorEnum.WRONG_NUMBER;
+            return CardValidityEnum.WRONG_NUMBER;
         }
         if (isValidityInvalid(cardValidity)) {
-            return AddCardErrorEnum.WRONG_VALIDITY;
+            return CardValidityEnum.WRONG_VALIDITY;
         }
         if (isCvvInvalid(cardCvv)) {
-            return AddCardErrorEnum.WRONG_CVV;
+            return CardValidityEnum.WRONG_CVV;
         }
-        return AddCardErrorEnum.GOOD;
+        return CardValidityEnum.GOOD;
     }
 }

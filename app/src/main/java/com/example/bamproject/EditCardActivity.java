@@ -3,9 +3,7 @@ package com.example.bamproject;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,9 +11,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import static com.example.bamproject.Constants.SHARED_PREFS;
-import static com.example.bamproject.Constants.USER_ID;
 
 public class EditCardActivity extends AppCompatActivity {
     final String TAG = "Edit Card Activity";
@@ -72,8 +67,8 @@ public class EditCardActivity extends AppCompatActivity {
         EditText cardCvvView = findViewById(R.id.card_edit_text_cvv);
         String cardCvv = cardCvvView.getText().toString();
 
-        AddCardErrorEnum addCardError = checkDataValidity(cardName, cardNumber, cardValidity, cardCvv);
-        if (addCardError == AddCardErrorEnum.GOOD) {
+        CardValidityEnum addCardError = CardValidator.checkDataValidity(cardName, cardNumber, cardValidity, cardCvv);
+        if (addCardError == CardValidityEnum.GOOD) {
             currentCard.cardName = cardName;
             currentCard.cardNumber = cardNumber;
             currentCard.cardValidity = cardValidity;
@@ -99,65 +94,12 @@ public class EditCardActivity extends AppCompatActivity {
         }
     }
 
-    private AddCardErrorEnum checkDataValidity(String cardName, String cardNumber, String cardValidity, String cardCvv) {
-        if (cardName.isEmpty() || cardNumber.isEmpty() || cardValidity.isEmpty() || cardCvv.isEmpty()) {
-            return AddCardErrorEnum.EMPTY_FIELDS;
-        }
-
-        if (isNumberInvalid(cardNumber)) {
-            return AddCardErrorEnum.WRONG_NUMBER;
-        }
-        if (isValidityInvalid(cardValidity)) {
-            return AddCardErrorEnum.WRONG_VALIDITY;
-        }
-        if (isCvvInvalid(cardCvv)) {
-            return AddCardErrorEnum.WRONG_CVV;
-        }
-        return AddCardErrorEnum.GOOD;
-    }
-
-    private boolean isNumberInvalid(String cardNumber) {
-        if (cardNumber.length() != 16) {
-            Log.d(TAG, "card number != 16 => " + cardNumber.length());
-            return true;
-        }
-        String regex = "^[0-9]{16}$";
-        boolean matches = cardNumber.matches(regex);
-        Log.d(TAG, "card number is matching => " + matches);
-        return !matches;
-    }
-
-    private boolean isValidityInvalid(String cardValidity) {
-        if (cardValidity.length() != 5) {
-            Log.d(TAG, "card validity != 5 => " + cardValidity.length());
-            return true;
-        }
-        String regex = "^(0[1-9]|1[0-2])\\/([0-9]{2})$";
-        boolean matches = cardValidity.matches(regex);
-        Log.d(TAG, "card validity is matching => " + matches);
-        return !matches;
-    }
-
-    private boolean isCvvInvalid(String cardCvv) {
-        if (cardCvv.length() != 3) {
-            Log.d(TAG, "card cvv != 3 => " + cardCvv.length());
-            return true;
-        }
-        try {
-            Integer.parseInt(cardCvv);
-        } catch (NumberFormatException e) {
-            Log.d(TAG, "card cvv error: " + e.toString());
-            return true;
-        }
-        return false;
-    }
-
     private void clearErrorsView() {
         TextView errorView = findViewById(R.id.card_edit_error);
         errorView.setText("");
     }
 
-    private void showErrorsView(AddCardErrorEnum registerError) {
+    private void showErrorsView(CardValidityEnum registerError) {
         String error = "";
         switch (registerError) {
             case EMPTY_FIELDS:

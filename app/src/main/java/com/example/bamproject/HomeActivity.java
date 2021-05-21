@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,11 +29,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static com.example.bamproject.Constants.PASSWORD;
-import static com.example.bamproject.Constants.SHARED_PREFS;
-import static com.example.bamproject.Constants.USERNAME;
-import static com.example.bamproject.Constants.USER_ID;
 
 public class HomeActivity extends AppCompatActivity {
     final String TAG = "Home Activity";
@@ -199,12 +193,11 @@ public class HomeActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "bad database format", Toast.LENGTH_SHORT).show();
             return null;
         } else {
-            CardValidator cardValidator = new CardValidator();
             String cardName = record[0];
             String cardNumber = record[1];
             String cardValidity = record[2];
             String cardCvv = record[3];
-            if (cardValidator.checkDataValidity(cardName, cardNumber, cardValidity, cardCvv) == AddCardErrorEnum.GOOD) {
+            if (CardValidator.checkDataValidity(cardName, cardNumber, cardValidity, cardCvv) == CardValidityEnum.GOOD) {
                 return new CardShort(cardName, cardNumber, cardValidity, cardCvv);
             }
         }
@@ -213,13 +206,9 @@ public class HomeActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void exportDatabase() {
-        if (Build.VERSION.SDK_INT >= 23) {
-            String[] PERMISSIONS = {android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE};
-            if (hasNoPermission(this, PERMISSIONS)) {
-                ActivityCompat.requestPermissions(this, PERMISSIONS, WRITE_READ_FILE_REQUEST_CODE);
-            } else {
-                exportDatabaseToFile();
-            }
+        String[] PERMISSIONS = {android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        if (hasNoPermission(this, PERMISSIONS)) {
+            ActivityCompat.requestPermissions(this, PERMISSIONS, WRITE_READ_FILE_REQUEST_CODE);
         } else {
             exportDatabaseToFile();
         }

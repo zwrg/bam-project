@@ -1,6 +1,6 @@
 package com.example.bamproject;
 
-public enum AddCardErrorEnum {
+public enum CardValidityEnum {
     GOOD,
     EMPTY_FIELDS,
     WRONG_VALIDITY,
