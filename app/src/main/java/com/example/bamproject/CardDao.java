@@ -9,6 +9,7 @@ import androidx.room.Update;
 
 import java.util.List;
 
+@SuppressWarnings("unused")
 @Dao
 public interface CardDao {
     @Transaction

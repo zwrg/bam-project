@@ -34,7 +34,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void logInUser(User user) {
-        Log.d(TAG, "Login successful");
+//        Log.d(TAG, "Login successful");
 
         Preferences.setUserId(getApplicationContext(), user.uid);
         Preferences.savePreference(getApplicationContext(), Preferences.USERNAME_PREFERENCE, user.username);

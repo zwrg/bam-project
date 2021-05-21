@@ -1,20 +1,12 @@
 package com.example.bamproject;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import static com.example.bamproject.Constants.PASSWORD;
-import static com.example.bamproject.Constants.SHARED_PREFS;
-import static com.example.bamproject.Constants.USERNAME;
-import static com.example.bamproject.Constants.USER_ID;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class RegisterActivity extends AppCompatActivity {
     final String TAG = "Register Activity";
@@ -83,7 +75,6 @@ public class RegisterActivity extends AppCompatActivity {
     public void registerUser(String username, String password) {
         AppDatabase database = AppDatabase.getInstance(getApplicationContext());
         UserDao userDao = database.userDao();
-        // todo add encryption
         new Thread(() -> {
             User user = new User(username, password);
             String checkIfUserInDatabase = userDao.findUser(username);

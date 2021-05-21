@@ -69,26 +69,19 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void refreshCardList() {
-        Log.d(TAG, "Refreshing Card List");
+//        Log.d(TAG, "Refreshing Card List");
         AppDatabase database = AppDatabase.getInstance(getApplicationContext());
         CardDao cardDao = database.cardDao();
         int userId = Preferences.getUserId(getApplicationContext());
         if (userId != 0) {
             new Thread(() -> {
                 List<Card> cards = cardDao.getUserCards(userId);
-                Log.d(TAG, cards.toString());
-                if (cards.size() == 0) {
-                    runOnUiThread(() -> updateView(cards));
-                } else {
-                    runOnUiThread(() -> updateView(cards));
-                }
+//                Log.d(TAG, cards.toString());
+                runOnUiThread(() -> updateView(cards));
             }).start();
         }
     }
 
-
-    private void clearView() {
-    }
 
     private void updateView(List<Card> cards) {
         RecyclerView recyclerView = findViewById(R.id.list_recycler_view);
@@ -127,13 +120,9 @@ public class HomeActivity extends AppCompatActivity {
 
 
     private void importDatabase() {
-        if (Build.VERSION.SDK_INT >= 23) {
-            String[] PERMISSIONS = {android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE};
-            if (hasNoPermission(this, PERMISSIONS)) {
-                ActivityCompat.requestPermissions(this, PERMISSIONS, WRITE_READ_FILE_REQUEST_CODE);
-            } else {
-                importDatabaseFromFile();
-            }
+        String[] PERMISSIONS = {android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        if (hasNoPermission(this, PERMISSIONS)) {
+            ActivityCompat.requestPermissions(this, PERMISSIONS, WRITE_READ_FILE_REQUEST_CODE);
         } else {
             importDatabaseFromFile();
         }
@@ -253,7 +242,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private static boolean hasNoPermission(Context context, String... permissions) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null && permissions != null) {
+        if (context != null && permissions != null) {
             for (String permission : permissions) {
                 if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
                     return true;
@@ -280,37 +269,9 @@ public class HomeActivity extends AppCompatActivity {
         return databaseFile.exists();
     }
 
-//    private void createFile(File databaseFile) {
-//        if (checkIfFileExists(databaseFile)) {
-//            try {
-//                boolean fileDeleted = databaseFile.delete();
-//                boolean fileCreated = false;
-//                if (fileDeleted) {
-//                    Log.d(TAG, "database file deleted");
-//                    fileCreated = databaseFile.createNewFile();
-//                }
-//                if (fileCreated) {
-//                    Log.d(TAG, "database file created");
-//                }
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        } else {
-//            try {
-//                boolean fileCreated = databaseFile.createNewFile();
-//                if (fileCreated) {
-//                    Log.d(TAG, "database file created");
-//                }
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
-
-
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void logout() {
-        Log.d(TAG, "Logout successful");
+//        Log.d(TAG, "Logout successful");
         Preferences.removeUserId(getApplicationContext());
         Preferences.removePreference(getApplicationContext(), Preferences.USERNAME_PREFERENCE);
         Preferences.removePreference(getApplicationContext(), Preferences.USER_PASSWORD_PREFERENCE);

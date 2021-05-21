@@ -35,7 +35,6 @@ public class AddCardActivity extends AppCompatActivity {
         if (addCardError == CardValidityEnum.GOOD) {
             AppDatabase database = AppDatabase.getInstance(getApplicationContext());
             CardDao cardDao = database.cardDao();
-            // todo add other user ID check
             int currentUserId = Preferences.getUserId(getApplicationContext());
 
             if (currentUserId == 0) {

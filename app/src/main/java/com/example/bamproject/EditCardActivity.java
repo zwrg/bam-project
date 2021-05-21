@@ -25,16 +25,15 @@ public class EditCardActivity extends AppCompatActivity {
 
         int cardId = getIntent().getIntExtra("cardUid", 0);
         if (cardId == 0) {
-            Log.d(TAG, "card id = 0, sth wrong");
+//            Log.d(TAG, "card id = 0, sth wrong");
             throw new Error(TAG + "card id = 0, sth wrong");
         }
 
         AppDatabase database = AppDatabase.getInstance(getApplicationContext());
         CardDao cardDao = database.cardDao();
         new Thread(() -> {
-            Card card = cardDao.getCard(cardId);
-            Log.d(TAG, card.toString());
-            currentCard = card;
+            currentCard = cardDao.getCard(cardId);
+            //            Log.d(TAG, currentCard.toString());
             runOnUiThread(this::updateView);
         }).start();
     }

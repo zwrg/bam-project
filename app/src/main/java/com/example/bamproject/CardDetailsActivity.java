@@ -1,21 +1,13 @@
 package com.example.bamproject;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.EditText;
 import android.widget.TextView;
 
-import java.util.List;
-
-import static com.example.bamproject.Constants.SHARED_PREFS;
-import static com.example.bamproject.Constants.USER_ID;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class CardDetailsActivity extends AppCompatActivity {
     final String TAG = "Card Details Activity";
@@ -31,7 +23,7 @@ public class CardDetailsActivity extends AppCompatActivity {
 
         int cardId = getIntent().getIntExtra("cardUid", 0);
         if (cardId == 0) {
-            Log.d(TAG, "card id = 0, sth wrong");
+//            Log.d(TAG, "card id = 0, sth wrong");
             throw new Error(TAG + "card id = 0, sth wrong");
         }
 
@@ -39,7 +31,7 @@ public class CardDetailsActivity extends AppCompatActivity {
         CardDao cardDao = database.cardDao();
         new Thread(() -> {
             Card card = cardDao.getCard(cardId);
-            Log.d(TAG, card.toString());
+//            Log.d(TAG, card.toString());
             currentCard = card;
             runOnUiThread(this::updateView);
         }).start();
@@ -56,8 +48,8 @@ public class CardDetailsActivity extends AppCompatActivity {
             cardButtonView.setText(R.string.show);
             cardNameView.setText(currentCard.cardName);
             cardNumberView.setText(hideNumber(currentCard.cardNumber));
-            cardValidityView.setText(hideValidity(currentCard.cardValidity));
-            cardCvvView.setText(hideCvv(currentCard.cvv));
+            cardValidityView.setText(hideValidity());
+            cardCvvView.setText(hideCvv());
         } else {
             cardButtonView.setText(R.string.hide);
             cardNameView.setText(currentCard.cardName);
@@ -67,11 +59,11 @@ public class CardDetailsActivity extends AppCompatActivity {
         }
     }
 
-    private String hideCvv(String cvv) {
+    private String hideCvv() {
         return "***";
     }
 
-    private String hideValidity(String cardValidity) {
+    private String hideValidity() {
         return "**/**";
     }
 
@@ -95,7 +87,7 @@ public class CardDetailsActivity extends AppCompatActivity {
         CardDao cardDao = database.cardDao();
         new Thread(() -> {
             cardDao.removeCard(currentCard);
-            Log.d(TAG, "removing card");
+//            Log.d(TAG, "removing card");
             currentCard = null;
             finish();
         }).start();

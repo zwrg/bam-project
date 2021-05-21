@@ -14,7 +14,7 @@ import java.util.List;
 
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
 
-    private List<Card> localDataSet;
+    private final List<Card> localDataSet;
 
     /**
      * Provide a reference to the type of views that you are using
@@ -39,10 +39,6 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
 
         public TextView getTextView() {
             return textView;
-        }
-
-        public int getCardUid() {
-            return cardUid;
         }
 
         public void setCardUid(int cardUid) {
@@ -77,7 +73,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
         viewHolder.getTextView().setText(localDataSet.get(position).cardName);
-        viewHolder.setCardUid(localDataSet.get(position).uid);;
+        viewHolder.setCardUid(localDataSet.get(position).uid);
     }
 
     // Return the size of your dataset (invoked by the layout manager)
