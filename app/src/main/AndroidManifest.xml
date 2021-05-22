@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <permission android:name="com.example.bamproject.read_cards"/>
 
     <application
         android:allowBackup="false"
@@ -19,7 +20,21 @@
             android:name=".CardProvider"
             android:authorities="com.example.bamproject"
             android:enabled="true"
-            android:exported="true" />
+            android:exported="true"
+            android:readPermission="com.example.bamproject.read_cards"
+            android:protectionLevel="signature"/>
+
+        <service
+            android:name=".MyAutofillService"
+            android:label="My Autofill Service"
+            android:permission="android.permission.BIND_AUTOFILL_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.autofill.AutofillService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.autofill"
+                android:resource="@xml/service_configuration" />
+        </service>
 
         <activity android:name=".CardDetailsActivity" />
         <activity android:name=".AddCardActivity" />
